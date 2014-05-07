@@ -1,20 +1,15 @@
-<!--- Could use a page controller but will just do a query call in page for now --->
-<cfoutput>
-	
-	<cfset qDomain = Application.Domains.getDomain( url.id )>
-	
-	<p>All form fields are required.</p>
-	
-	<form id="edit-form">
-		<input type="hidden" name="domainId" id="domainId" value="#url.id#">
-		
-		<fieldset>
-			
-			<label for="domainName">Domain Name <span class="sebReq">*</span></label>
-			<input type="text" name="domainName" id="domainName" class="text ui-widget-content ui-corner-all" value="#qDomain.DomainName#">
-			
-		</fieldset>
-		
-	</form>	
+<cfparam name="URL.id" default="0">
 
-</cfoutput>	
+<cf_template>
+	
+	<h1> Editing domain record </h1>
+	
+	<cf_sebForm forward="index.cfm" pkfield="DomainID" recordid="#URL.id#"
+				CFC_Component="#Application.Domains#" CFC_GetMethod="getDomain" CFC_Method="saveDomain">
+	      
+		<cf_sebField name="DomainName" label="Domain Name" required="true" regex="^((?!www).)*$">
+	    <cf_sebField type="submit" label="Save">
+		  
+	</cf_sebForm>
+
+</cf_template>

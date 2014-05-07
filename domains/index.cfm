@@ -36,7 +36,7 @@
 			
 			<p>Accepts any domain url and if the domain exists in the database it will return the relative path, otherwise it will return the whole domain url</p>
 			
-			<cf_sebForm CFC_Component="#Application.Domains#" CFC_Method="convertURL" forward="index.cfm?relPath={return}">
+			<cf_sebForm CFC_Component="#Application.Domains#" CFC_Method="convertURL" forward="index.cfm?relPath={result}">
 			   <cf_sebField name="DomainName" label="Domain Name" required="true">
 			   <cf_sebField type="submit" label="Get Relative Path">
 			</cf_sebForm>
@@ -57,12 +57,6 @@
 			
 		</div>
 						
-	</div>
-	
-	<div id="domain-edit-form" title="Edit Domain Name">
-		
-		<div id="loader"></div>	
-		
 	</div>
 			
 </cf_Template>

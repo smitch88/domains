@@ -16,41 +16,34 @@
 	<cffunction name="validateDomain" access="public" returntype="struct" output="no">
 		
 		<cfif StructKeyExists( arguments, "DomainName" )>
-			<cfset arguments.DomainName = getURLDomainStruct( arguments.DomainName ).domain />
+			
+			<cfset var strippedDomain = getURLDomainStruct( arguments.DomainName ).domain />
+			
+			<!--- Not already stripped --->
+			<cfif Len( strippedDomain ) > 0 >
+				
+				<cfset arguments.DomainName = strippedDomain />
+			
+			</cfif>
+						
 		</cfif>
 		
 		<cfreturn arguments>
 		
 	</cffunction>
-
-	<!--- Remote update function that only saves the domain name --->
-	<cffunction name="remoteUpdateDomain" access="remote" returntype="string" output="no" returnformat="json">
-		
-		<cfset var returnStruct = {
-			"success" = false,
-			"message" = "Failed to update the domain name"
-		} />
-		
-		<cfset var urlStruct = getURLDomainStruct( form.domainName ) />
-		
-		<cfset var recordUpdate = saveRecord( DomainId = form.id, DomainName = urlStruct.domain ) />
-		
-		<cfreturn serializeJSON( returnStruct ) />
-		
-	</cffunction>
-			
+	
 	<cffunction name="convertURL" access="public" returntype="string" output="yes">
 		<cfargument name="domainName"required="true">
 		
 		<!--- Returns struct of strings ( domain, relativePath ) that have gone through regex match --->
 		<cfset var urlReturnString = arguments.domainName />
-		<cfset var urlStruct = getURLDomainStruct( arguments.domainName ) />
-		<cfset var hasMatchingDomain = hasDomains( DomainName = urlStruct.domain ) />
+		<cfset var sUrlStruct = getURLDomainStruct( arguments.domainName ) />
+		<cfset var hasMatchingDomain = hasDomains( DomainName = sUrlStruct.domain ) />
 		
 		<!--- Check to see if domain already exists in the set --->
 		<cfif hasMatchingDomain >
 			
-			<cfset urlReturnString = urlStruct.relativePath />
+			<cfset urlReturnString = sUrlStruct.relativePath />
 			
 		</cfif>
 		
@@ -61,19 +54,19 @@
 	<cffunction name="getURLDomainStruct" access="private" returntype="struct" output="yes">
 		<cfargument name="url" required="true">
 		
-		<cfset var domainStruct = { "domain" = "", "relativePath" = "" } />
-		<cfset var domainWithRelativePath = "(\w+.)(com|net|org|gov)(.*)?" />
+		<cfset var sDomainStruct = { "domain" = arguments.url, "relativePath" = "" } />
+		<cfset var domainWithRelativePath = "(\w+.)([a-zA-Z]+)\/(.*)?" />
 		
-		<cfset var matches = REMatch( domainWithRelativePath , arguments.url ) />
+		<cfset var aMatches = REMatch( domainWithRelativePath , arguments.url ) />
 		
-		<cfif ArrayLen( matches ) GT 0 >
+		<cfif ArrayLen( aMatches ) GT 0 >
 			
-			<cfset domainStruct.domain = ListFirst( matches[1], "/" ) />
-			<cfset domainStruct.relativePath = ListRest( matches[1], "/" ) />
+			<cfset sDomainStruct.domain = ListFirst( aMatches[1], "/" ) />
+			<cfset sDomainStruct.relativePath = "/" & ListRest( aMatches[1], "/" ) />
 				
 		</cfif>
 		
-		<cfreturn domainStruct />
+		<cfreturn sDomainStruct />
 			
 	</cffunction>
 		

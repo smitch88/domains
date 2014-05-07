@@ -42,8 +42,6 @@
 				
 				this._styleButtons();
 				
-				this._initDialog();
-				
 				// Generate tab interface
 				this.$tabs = $( "##mainTabs" );
 								
@@ -80,20 +78,7 @@
 				
 				var self = this;
 				
-				$( document ).on( 'click.domains', '.sebHeader a', $.proxy( this._activateAddTab , this ) );				
-				
-				$( document ).on( 'click.domains', '.sebColumnLink-edit', function( e ){
-
-					e.preventDefault();
-					
-					var $dialog = $( "##domain-edit-form" ),
-						buttonHREF = $( e.currentTarget ).prop( "href" );
-					
-					$dialog.find( '##loader' ).load( buttonHREF );
-					
-					$dialog.dialog( "open" );
-								
-				});
+				$( document ).on( 'click.domains', '.sebHeader a', $.proxy( this._activateAddTab , this ) );
 				
 			},
 			
@@ -102,55 +87,7 @@
 				$( 'input[type="submit"]' ).button();
 					
 			},
-			
-			_initDialog: function(){
-				
-				var self = this;
-				
-				// Just testing out some ajax dialoging with jquery ui
-				$( "##domain-edit-form" ).dialog({
-					
-					autoOpen: false,
-					height: 300,
-					width: 350,
-					modal: true,
-	
-					buttons: {
-						
-						"Save": function() {
-							
-							var $form = $( '##edit-form' ),
-								domainId = $form.find( "input[name='domainId']" ).val()
-								domainValue = $form.find( "input[name='domainName']" ).val();
-	
-							$.ajax({
-								
-								type: "POST",
-								url: "../Domains/model/Domains.cfc?method=remoteUpdateDomain",
-								data: { id: domainId, domainName: domainValue },
-								dataType: 'json',
-								success: function( data ){
-									
-									console.log( data );
-									
-								}								
-								
-							});
-							
-						},
-						
-						Cancel: function() {
-							
-							$( this ).dialog( "close" );
-							
-						}
-						
-					}
-					
-				});				
-				
-			},
-			
+
 			_activateAddTab: function( e ){
 				 
 				e.preventDefault();
