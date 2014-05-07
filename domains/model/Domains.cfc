@@ -1,9 +1,7 @@
 <cfcomponent displayName="Domains" extends="com.sebtools.Records" output="no">
 
-<!--- Will create a table "Domain" with DomainID, Text field for DomainName, and text filed DomainURL --->
-<cffunction name="xml" access="public" returntype="void" output="yes">
+<cffunction name="xml" access="public" returntype="void" output="yes" hint="Will create a table "Domain" with DomainID, Text field for DomainName, and text filed DomainURL">
 	
-	<!--- Needs to have tables as root of xml --->
 	<tables>
 	
 		<table entity="Domain"></table>
@@ -12,8 +10,7 @@
 	
 </cffunction>
 
-<!--- Custom validation function that only saves the domain name --->
-<cffunction name="validateDomain" access="public" returntype="struct" output="no">
+<cffunction name="validateDomain" access="public" returntype="struct" output="no" hint="Custom validation function that only saves the domain name">
 	
 	<cfif StructKeyExists( arguments, "DomainName" )>
 		
