@@ -1,3 +1,3 @@
 <cf_PageController>
 
-<cf_sebTable isAddable="false" />
+<cf_sebTable/>

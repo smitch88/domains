@@ -24,8 +24,7 @@
 			
 			this.$tabs = null;
 			this.tabsObjects = {
-				"listing": 0,
-				"add": 1	
+				"listing": 0
 			};
 
 		}
@@ -78,7 +77,8 @@
 				
 				var self = this;
 				
-				$( document ).on( 'click.domains', '.sebHeader a', $.proxy( this._activateAddTab , this ) );
+				// Removing to reuse domains-edit.cfm instead
+				//$( document ).on( 'click.domains', '.sebHeader a', $.proxy( this._activateAddTab , this ) );
 				
 			},
 			
